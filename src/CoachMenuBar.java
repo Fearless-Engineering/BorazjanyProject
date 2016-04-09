@@ -5,6 +5,5 @@ class CoachMenuBar extends JMenuBar implements ActionListener
     
     JMenu Session;
     JMenuItem ;
-    
     JMenu File;
     

@@ -1,3 +1,0 @@
-class CoachSession extends Session
-{
-    

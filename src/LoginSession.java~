@@ -1,5 +1,0 @@
-class LoginSession extends JPanel implements ActionListener
-{
-    public LoginSession();
-    {
-	SessionManager session = new SessionManager();
