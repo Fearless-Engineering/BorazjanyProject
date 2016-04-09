@@ -18,6 +18,8 @@ class GUISession extends JFrame
       When a user logs in, operator wil be given a value based upon
       This enables the GUI to access functions that the user can perform without being able to access
       the sessionUser itself, enabling us to keep SessionUser private and solely managed by GUISession.
+
+      I don't actually know if you can "instantiate" an interface this way.
     */
     UserOps operations;
 
@@ -48,7 +50,7 @@ class GUISession extends JFrame
 	
 	loginsig = sessionUser.login(username, password);
 	if(loginsig != 0)
-	    return loginsig;//user put something in wrong.
+	    return loginsig;//user put something in wrong, retry.
 	
 	if(sessionUser.userType == "Coach")
 	    {
@@ -100,4 +102,13 @@ class GUISession extends JFrame
 	add(new ManagerGUI());
 	operations = sessionUser.operations();
     }
+
+    private void clearDisplay()
+    {
+	//ripped these off of some stackexchange question I found.
+	removeAll();
+	revalidate();
+	repaint();
+    }
+	
 }

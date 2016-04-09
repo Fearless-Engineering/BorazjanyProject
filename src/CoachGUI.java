@@ -1,31 +1,27 @@
 //My plan for this is to create a good specific class and then generalize later
-//most members of CoachGUI, as well as coachGUI itself has superclasses that I have yet
+//most members of CoachGUI, as well as coachGUI itself, might have  superclasses that I have yet
 //to implement.
 
-class CoachGUI extends JFrame implements ActionListener
+class CoachGUI extends JFrame 
 {
-    JMenuBar menuBar;;
-    JMenuItem Logout;
 
-    JMenu File;
-    JMenuItem save;
-    JMenuItem load;
-    JMenuItem newItem; 
     
     
+    CoachMenuBar menuBar;
     JtabbedPane Tabbes;
     CalendarPane calendar;
     TeamPane team;
     
     public CoachGUI()
     {
-	createMenuBar();
+	menuBar = new CoachMenu();
+	Tabbes = new JTabbedPane();
+	calendar = new CalendarPane();
+	team = new TeamPane();
+	add(menuBar);
+	Tabbes.add("Calendar", calendar);
+	Tabbes.add("My Team", team);
     }
-
-    void createMenuBar()
-    {
-	menuBar = new JMenuBar();
-	File = new JMenu 
 }
 
     
