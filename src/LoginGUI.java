@@ -1,4 +1,4 @@
-class LoginSession extends JPanel implements ActionListener
+class LoginGUI extends JPanel implements ActionListener
 {
     Jbutton confirm;
     SessionManger session;
@@ -20,4 +20,4 @@ class LoginSession extends JPanel implements ActionListener
 		session.login(username.getText(), password.getText());
 	    }
     }
-	
+}

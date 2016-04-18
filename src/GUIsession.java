@@ -78,7 +78,7 @@ class GUISession extends JFrame
     private void displayLoginScreen()
     {
 	clearDisplay();
-	add(new LoginScreen());
+	add(new LoginGUI());
 	operations = new nullOperations();
     }
 
