@@ -1,106 +1,108 @@
+
+package digitalLeague;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 /*Manages the current user, and the overall GUI.*/
 /*Also a singleton.*/
 class GUISession extends JFrame
 {
     private static GUISession currentSession = null;
 
-    //this is not a regular "user." this contains current user data, not password.
-    //It contains functions such as login, logout, and loads the appropriate user data.
-    SessionUser sessionUser;
+    //Instead of the interface/user paradigm, i've decided to go with a single abstract class "User".
+    //It defines the generic data fields for all user types and also defines all possible functions for all users.
+    //Makes it a bit more simple, and closer to what we were doing originally. accomplishes the same basic thing.
+    //I still like the interface/user paradigm, though.
+    User user;
 
-    /*list of operations avaliable to the user in the current session.
-      I intend for it to be loaded with a bunch of functions specific to the user type.
-      GUI will call functions, error message will be returned by operations if function is not avaliable to user.
-      operator implements an interface called UserOps, that contains definitions for all possible
-      functions any user can perform.
-      Depending on the type of user, these functions are implemented differently. Functions that a user
-      cannot use might return an error message, for example.
-      When a user logs in, operator wil be given a value based upon
-      This enables the GUI to access functions that the user can perform without being able to access
-      the sessionUser itself, enabling us to keep SessionUser private and solely managed by GUISession.
-
-      I don't actually know if you can "instantiate" an interface this way.
-    */
-    UserOps operations;
-
-    //Coach, Manager, Player
-    Int sessionType;
+    Integer sessionType;
     
-    private GUIsession()
+    private GUISession()
     {
 	super();
-	UserOperations = new nullOperations();//User cannot properly perform any operations.
+	System.out.println("heyo! making a session");
+	//UserOperations = new nullOperations();//User cannot properly perform any operations.
 	setVisible(true);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.setSize(1000,1000);
-	displayloginscreen();
+	currentSession = this;
+	System.out.println(System.identityHashCode(this));
+	System.out.println(System.identityHashCode(currentSession));
+	displayLoginScreen();
     }
 
-    public GUIsession myGUIsession()
+    public static GUISession myGUISession()
     {
 	if(currentSession == null)
-	    currentSession = new GUISession();
+	    new GUISession();
 	return currentSession;
     }
 
-    public Int login(string username, string password);
+    public Integer login(String username, String password)
     {
 
-	Int loginsig;
-	
-	loginsig = sessionUser.login(username, password);
-	if(loginsig != 0)
-	    return loginsig;//user put something in wrong, retry.
-	
-	if(sessionUser.userType == "Coach")
+	LoginRet retVal;//class containing an integer loginsig and the user.
+	DataBase dataBass = DataBase.myDataBase();
+
+	retVal = dataBass.login(username, password);
+	if(retVal.loginsig != 0)//you could just check to see if retVal.user is null, but there might be other error conditions that you could implement
+	    {
+		return retVal.loginsig;//user put something in wrong, retry.
+	    }
+
+	user = retVal.user;//yes it's public. wanna fight about it?
+
+	if(user.userType().equals("Coach"))
 	    {
 		sessionType = 0;
 		beginCoachSession();
 	    }
-	if(sessionUser.userType == "Player")
+	if(user.userType().equals("Player"))
 	    {
 		sessionType = 1;
 		beginPlayerSession();
 	    }
-	if(sessionUser.userType == "Manager")
+	if(user.userType().equals("Manager"))
 	    {
 		sessionType = 2;
-		beginManagerSesion();
+		beginManagerSession();
 	    }
+	return 0;
     }
 
-    public logout();
+    public void logout()
     {
-	sessionUser.logout();
-	displayloginscreen();
+	clearDisplay();
+	user = null;
+	displayLoginScreen();
     }
     
     private void displayLoginScreen()
-    {
-	clearDisplay();
+    { 
+	//clearDisplay();
+	System.out.println("Sup! Me again, adding a loginGUI.");
 	add(new LoginGUI());
-	operations = new nullOperations();
+	user = null;
     }
 
     private void beginCoachSession()
     {
 	clearDisplay();
 	add(new CoachGUI());
-	operations = sessionUser.operations();
     }
     
-    private void beginPlayerSession();
+    private void beginPlayerSession()
     {
-	clearDisplay();
-	add(new PlayerGUI());
-	operations = sessionUser.operations();
+	//clearDisplay();
+	//add(new PlayerGUI());
     }
 
     private void beginManagerSession()
     {
-	clearDisplay();
-	add(new ManagerGUI());
-	operations = sessionUser.operations();
+	//clearDisplay();
+	//add(new ManagerGUI());
     }
 
     private void clearDisplay()

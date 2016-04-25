@@ -2,7 +2,12 @@
   everything else*/
 /*this is so later there might be options to have different session types.
  */
+package digitalLeague;
+
 public class League
 {
-    new GUIsession();
+    public static void main(String[] args)
+    {
+	GUISession session = GUISession.myGUISession();
+    }
 }
